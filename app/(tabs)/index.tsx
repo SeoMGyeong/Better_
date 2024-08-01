@@ -1,70 +1,98 @@
-import { Image, StyleSheet, Platform } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import {
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  useWindowDimensions,
+  View,
+} from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+// tab의 인덱스
+// 파일명이랑 똑같이 안줘도 됨. 하지만 똑같이 안주면 헷갈리겠지...
+// p.671
+const HomeScreen = () => {
+  const navigation = useNavigation(); //react-native걸로 import
+  const { top } = useSafeAreaInsets();
+  const height = useWindowDimensions().height / 4; //화면 전체 높이값 / 4, width는 가로폭
 
-export default function HomeScreen() {
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
+    <View style={[styles.container, { paddingTop: top }]}>
+      {/*타이틀 */}
+      <View style={styles.topContainer}>
         <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
+          source={require('../../assets/images/icon.png')}
+          style={styles.icon}
         />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({ ios: 'cmd + d', android: 'cmd + m' })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+        <Text style={styles.title}>PlacePhotos</Text>
+      </View>
+
+      {/*타임라인 */}
+      <View style={styles.buttonContainer}>
+        {/*Pressable대신 Link를 사용할수도 있다는것~ */}
+        <Pressable>
+          <Image
+            source={require('../../assets/images/home-clock.png')}
+            style={[styles.image, { height }]}
+          />
+          <Text style={styles.buttonTitle}>타임라인</Text>
+        </Pressable>
+      </View>
+
+      {/*지도 */}
+      <View style={styles.buttonContainer}>
+        {/*Pressable대신 Link를 사용할수도 있다는것~ */}
+        <Pressable>
+          <Image
+            source={require('../../assets/images/home-map.png')}
+            style={[styles.image, { height }]}
+          />
+          <Text style={styles.buttonTitle}>지도</Text>
+        </Pressable>
+      </View>
+    </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: WHITE,
+    paddingHorizontal: 20, //가로 양쪽 여백
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+  topContainer: {
+    flexDirection: 'row', // 가로정렬
+    alignItems: 'center', // 수직가운데정렬
+    justifyContent: 'center',
+    marginBottom: 30,
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  icon: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+  },
+  title: {
+    fontSize: 30,
+    fontWeight: '700',
+    marginLeft: 10,
+  },
+  buttonContainer: {
+    marginVertical: 20, // 아래위영역
+  },
+  image: {
+    width: '100%', // 가로 꽉차게
+    borderRadius: 30,
+  },
+  buttonTitle: {
+    position: 'absolute', // 글자 화면 위로 올리기 (겹쳐짐), 위치 지정해줘야됨
+    left: 30,
+    bottom: 30,
+    color: WHITE,
+    fontSize: 40,
+    fontWeight: '700',
   },
 });
+
+export default HomeScreen;
