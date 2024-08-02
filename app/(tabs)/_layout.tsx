@@ -1,30 +1,26 @@
-import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
-//
+
 const TabLayout = () => {
   return (
-    // name="/" 레이아웃 기준의... 루트? 루트경로.기본 탭 화면
-    // headerShown:false -> 헤더사라짐 , true는 헤더 보임
-    <Tabs screenOptions={{ headerShown: true }}>
+    <Tabs>
       <Tabs.Screen
-        name="index" //name이름은 파일이름이랑 같아야됨
+        name="CategoryScreen"
         options={{
-          title: 'Home',
-          headerShown: true, //header 보여짐
-
+          title: 'category',
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon
-              name={focused ? 'home' : 'home-outline'}
+            <MaterialCommunityIcons
+              name={focused ? 'view-headline' : 'view-headline'}
               color={color}
+              size={32}
             />
           ),
         }}
       />
       <Tabs.Screen
-        name="ListScreen"
+        name="index"
         options={{
-          title: 'List',
+          title: 'home',
           tabBarIcon: ({ color, focused }) => (
             <MaterialCommunityIcons
               name={focused ? 'home' : 'home-outline'}
@@ -34,35 +30,16 @@ const TabLayout = () => {
           ),
         }}
       />
-      <Tabs.Screen
-        name="SelectPhotosScreen"
-        options={{
-          title: 'Add',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'add' : 'add-outline'} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="MapScreen"
-        options={{
-          title: 'Map',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon
-              name={focused ? 'home' : 'home-outline'}
-              color={color}
-            />
-          ),
-        }}
-      />
+
       <Tabs.Screen
         name="ProfileScreen"
         options={{
-          title: 'Profile',
+          title: 'profile',
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon
-              name={focused ? 'home' : 'home-outline'}
+            <MaterialCommunityIcons
+              name={focused ? 'account-circle' : 'account-circle-outline'}
               color={color}
+              size={32}
             />
           ),
         }}

@@ -1,11 +1,10 @@
-import { StyleSheet, Text, View } from 'react-native';
-// import ContentTab from '@/src/navigations/contentTab';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
+import TabLayout from './(tabs)/_layout';
 
 const index = () => {
   return (
     <View style={styles.container}>
-      <Text>첫화면</Text>
-      {/* <ContentTab /> */}
+      <TabLayout />
     </View>
   );
 };
