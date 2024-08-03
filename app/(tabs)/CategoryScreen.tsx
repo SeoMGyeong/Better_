@@ -1,9 +1,9 @@
-import { Image, StyleSheet, Platform, View, Text } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 
-const HomeScreen = () => {
+const CategoryScreen = () => {
   return (
     <View style={styles.container}>
-      <Text>홈화면</Text>
+      <Text>카테고리 스크린</Text>
     </View>
   );
 };
@@ -16,4 +16,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeScreen;
+export default CategoryScreen;

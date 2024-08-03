@@ -1,9 +1,9 @@
-import { Image, StyleSheet, Platform, View, Text } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 
-const HomeScreen = () => {
+const ProfileScreen = () => {
   return (
     <View style={styles.container}>
-      <Text>홈화면</Text>
+      <Text>프로필 스크린</Text>
     </View>
   );
 };
@@ -16,4 +16,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeScreen;
+export default ProfileScreen;
