@@ -1,6 +1,6 @@
-import { Tabs } from "expo-router";
-import React from "react";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Tabs } from 'expo-router';
+import React from 'react';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const TabLayout = () => {
   return (
@@ -12,10 +12,10 @@ const TabLayout = () => {
       <Tabs.Screen
         name="CategoryScreen"
         options={{
-          title: "Category",
+          title: 'Category',
           tabBarIcon: ({ color, focused }) => (
             <MaterialCommunityIcons
-              name={focused ? "view-headline" : "view-headline"}
+              name={focused ? 'view-headline' : 'view-headline'}
               color={color}
               size={32}
             />
@@ -26,10 +26,10 @@ const TabLayout = () => {
       <Tabs.Screen
         name="index"
         options={{
-          title: "Home",
+          title: 'Home',
           tabBarIcon: ({ color, focused }) => (
             <MaterialCommunityIcons
-              name={focused ? "home" : "home-outline"}
+              name={focused ? 'home' : 'home-outline'}
               color={color}
               size={32}
             />
@@ -40,10 +40,10 @@ const TabLayout = () => {
       <Tabs.Screen
         name="ProfileScreen"
         options={{
-          title: "Profile",
+          title: 'Profile',
           tabBarIcon: ({ color, focused }) => (
             <MaterialCommunityIcons
-              name={focused ? "account-circle" : "account-circle-outline"}
+              name={focused ? 'account-circle' : 'account-circle-outline'}
               color={color}
               size={32}
             />
