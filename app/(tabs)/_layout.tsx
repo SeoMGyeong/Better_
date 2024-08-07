@@ -6,7 +6,7 @@ const TabLayout = () => {
   return (
     <Tabs
     // screenOptions={{
-    //   headerShown: false,
+    //  headerShown: false,
     // }}
     >
       <Tabs.Screen
@@ -27,6 +27,7 @@ const TabLayout = () => {
         name="index"
         options={{
           title: 'Home',
+
           tabBarIcon: ({ color, focused }) => (
             <MaterialCommunityIcons
               name={focused ? 'home' : 'home-outline'}

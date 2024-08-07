@@ -1,12 +1,12 @@
 import Header from '@/components/Header';
-import { useNavigation } from '@react-navigation/native';
-import React, { useLayoutEffect, useState } from 'react';
+import { useNavigation } from 'expo-router';
+import { useLayoutEffect, useState } from 'react';
 import {
-  View,
-  Text,
   ScrollView,
-  TouchableOpacity,
   StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 
 const productTypes = [
@@ -23,20 +23,19 @@ const productTypes = [
 ];
 
 const CategoryScreen = () => {
-  // const navigation = useNavigation();
+  const navigation = useNavigation();
   const [selectedCategory, setSelectedCategory] = useState<string>(
     productTypes[0]
   );
 
-  // useLayoutEffect(() => {
-  //   navigation.setOptions({
-  //     headerShown: false, // 기본 헤더를 숨기기.
-  //   });
-  // }, [navigation]);
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerTitle: () => <Header />, // Header 컴포넌트를 헤더로 사용
+    });
+  }, [navigation]);
 
   return (
     <View style={styles.container}>
-      <Header />
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -72,13 +71,16 @@ const styles = StyleSheet.create({
   tabBar: {
     flexDirection: 'row',
     backgroundColor: '#f8f8f8',
-    paddingVertical: 10,
+    // paddingVertical: 10,
+    maxHeight: 60, // 원하는 높이로 설정
   },
   tabItem: {
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderBottomWidth: 2,
     borderBottomColor: 'transparent',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   selectedTabItem: {
     borderBottomColor: '#000',

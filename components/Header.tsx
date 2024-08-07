@@ -39,6 +39,7 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     height: 50,
+    backgroundColor: 'white',
     //   justifyContent: 'center',
     //   alignItems: 'center',
     //   paddingHorizontal: 30, // Header의 왼쪽과 오른쪽 여백을 설정합니다.
