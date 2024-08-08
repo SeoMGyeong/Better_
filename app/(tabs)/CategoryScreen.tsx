@@ -65,7 +65,12 @@ const CategoryScreen = () => {
   }, [selectedCategory]);
 
   const renderProduct = ({ item }) => (
-    <View style={styles.productItem}>
+    <TouchableOpacity
+      style={styles.productItem}
+      onPress={() =>
+        navigation.navigate('ProductScreen', { productId: item.id })
+      }
+    >
       <Image
         source={{ uri: item.api_featured_image }}
         style={styles.productImage}
@@ -73,7 +78,7 @@ const CategoryScreen = () => {
       <Text style={styles.productBrand}>{item.brand}</Text>
       <Text style={styles.productName}>{item.name}</Text>
       <Text style={styles.productPrice}>₩{formatPrice(item.price)}</Text>
-    </View>
+    </TouchableOpacity>
   );
 
   return (
@@ -97,7 +102,6 @@ const CategoryScreen = () => {
         ))}
       </ScrollView>
       <View style={styles.content}>
-        <Text style={styles.contentText}>{selectedCategory} 제품 목록</Text>
         <FlatList
           data={filteredProducts}
           renderItem={renderProduct}
@@ -137,11 +141,6 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     padding: 10,
-  },
-  contentText: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginVertical: 10,
   },
   productList: {
     justifyContent: 'space-between',
