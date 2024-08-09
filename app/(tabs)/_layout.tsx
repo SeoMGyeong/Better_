@@ -39,7 +39,7 @@ const TabLayout = () => {
       />
 
       <Tabs.Screen
-        name="ProfileScreen"
+        name="SignInScreen"
         options={{
           title: 'Profile',
           tabBarIcon: ({ color, focused }) => (

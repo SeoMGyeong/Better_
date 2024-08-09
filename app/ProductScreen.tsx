@@ -3,11 +3,15 @@ import {
   View,
   Text,
   Image,
-  Button,
   StyleSheet,
   ScrollView,
+  TouchableOpacity,
+  FlatList,
 } from 'react-native';
 import { RouteProp, useRoute } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons';
+import Hr from '@/components/Hr';
+import { GRAY } from '@/constants/Colors';
 
 // API 데이터 타입 정의
 type Product = {
@@ -31,6 +35,7 @@ const ProductScreen = () => {
   const { productId } = route.params;
 
   const [product, setProduct] = useState<Product | null>(null);
+  const [isFavorite, setIsFavorite] = useState(false); // 찜하기 상태 관리
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -50,33 +55,65 @@ const ProductScreen = () => {
 
   if (!product) {
     return (
-      <View style={styles.container}>
+      <View style={styles.loadingContainer}>
         <Text>로딩 중...</Text>
       </View>
     );
   }
 
+  const toggleFavorite = () => {
+    setIsFavorite(!isFavorite); // 찜하기 상태를 토글
+  };
+
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Image source={{ uri: product.image_link }} style={styles.productImage} />
-      <Text style={styles.brandName}>{product.brand}</Text>
-      <Text style={styles.productName}>{product.name}</Text>
-      <Text style={styles.price}>{`₩${(
-        parseInt(product.price) * 1600
-      ).toLocaleString()}`}</Text>
-      <Text style={styles.description}>{product.description}</Text>
+    <View style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <Image
+          source={{ uri: product.image_link }}
+          style={styles.productImage}
+        />
+        <Hr />
+        <Text style={styles.brandName}>{product.brand}</Text>
+        <Text style={styles.productName}>{product.name}</Text>
+        <Text style={styles.price}>{`₩${(
+          parseInt(product.price) * 1600
+        ).toLocaleString()}`}</Text>
+        <Text style={styles.description}>{product.description}</Text>
+      </ScrollView>
       <View style={styles.buttonContainer}>
-        <Button title="찜하기" onPress={() => {}} />
-        <Button title="장바구니" onPress={() => {}} />
-        <Button title="구매하기" onPress={() => {}} />
+        <TouchableOpacity style={styles.button} onPress={toggleFavorite}>
+          <Text style={styles.buttonText}>찜하기&nbsp;</Text>
+          <Ionicons
+            name={isFavorite ? 'heart' : 'heart-outline'} // 상태에 따라 아이콘 변경
+            size={24}
+            color="black"
+            style={styles.icon}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={() => {}}>
+          <Text style={styles.buttonText}>장바구니</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={() => {}}>
+          <Text style={styles.buttonText}>구매하기</Text>
+        </TouchableOpacity>
       </View>
-    </ScrollView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
+  scrollContainer: {
     padding: 16,
+    paddingBottom: 100, // 버튼이 스크롤 내용과 겹치지 않도록 여유 공간을 둡니다.
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
     backgroundColor: 'white',
   },
   productImage: {
@@ -86,7 +123,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   brandName: {
-    fontSize: 18,
+    fontSize: 50,
     fontWeight: 'bold',
     marginBottom: 8,
   },
@@ -100,13 +137,38 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   description: {
-    fontSize: 14,
+    fontSize: 20,
     marginBottom: 16,
   },
   buttonContainer: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between', // 버튼들이 화면을 꽉 채우도록
+    backgroundColor: 'white',
+    paddingVertical: 16,
+    paddingHorizontal: 10,
   },
+  button: {
+    flex: 1, // 버튼이 남은 공간을 균등하게 차지하도록
+    alignItems: 'center',
+    paddingVertical: 12,
+    marginHorizontal: 5,
+    backgroundColor: GRAY.DEFAULT, // 버튼 배경색
+    borderRadius: 5,
+    flexDirection: 'row', // 아이콘과 텍스트가 나란히 배치되도록
+    justifyContent: 'center',
+  },
+  buttonText: {
+    alignItems: 'center',
+    color: 'black',
+    fontSize: 16,
+    fontWeight: 'bold',
+    // marginLeft: 8, // 아이콘과 텍스트 사이에 여백 추가
+  },
+  icon: {},
 });
 
 export default ProductScreen;
