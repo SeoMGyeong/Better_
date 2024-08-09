@@ -29,7 +29,7 @@ const productTypes = [
 
 const formatPrice = (price) => {
   if (!price || price === '0.0') return '가격 정보 없음';
-  const priceNumber = parseFloat(price) * 1300;
+  const priceNumber = parseFloat(price) * 1600;
   return priceNumber.toLocaleString('ko-KR'); // 한국 원화 형식으로 포맷
 };
 

@@ -61,8 +61,8 @@ const ProductScreen = () => {
       <Image source={{ uri: product.image_link }} style={styles.productImage} />
       <Text style={styles.brandName}>{product.brand}</Text>
       <Text style={styles.productName}>{product.name}</Text>
-      <Text style={styles.price}>{`₩${parseInt(
-        product.price
+      <Text style={styles.price}>{`₩${(
+        parseInt(product.price) * 1600
       ).toLocaleString()}`}</Text>
       <Text style={styles.description}>{product.description}</Text>
       <View style={styles.buttonContainer}>
