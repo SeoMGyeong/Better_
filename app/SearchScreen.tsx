@@ -84,8 +84,8 @@ const SearchScreen = () => {
           <TouchableOpacity
             style={styles.resultItem}
             onPress={() => {
-              // 검색 결과 클릭 시 처리할 내용 추가
-              console.log(`Clicked on ${item.name}`);
+              // 검색 결과 클릭 시 상품 상세 페이지로 이동
+              navigation.navigate('ProductScreen', { productId: item.id });
             }}
           >
             <Text>{item.name}</Text>

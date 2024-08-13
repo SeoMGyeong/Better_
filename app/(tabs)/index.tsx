@@ -126,6 +126,7 @@ const HomeScreen = () => {
         scrollEnabled={false} // 이 FlatList의 스크롤 비활성화 (전체 ScrollView에서 스크롤 관리)
       />
       {/* 브랜드별 상품 목록 */}
+      <Text style={styles.sectionTitle}>브랜드별 상품 목록</Text>
       {Object.keys(brands).map((brand) =>
         renderBrandSection(brand, brands[brand])
       )}
@@ -150,20 +151,32 @@ const styles = StyleSheet.create({
   },
   productContainer: {
     flex: 1, // 아이템을 화면에 골고루 분배
-    margin: 5, // 아이템 간의 여백 설정
+    margin: 8, // 아이템 간의 여백 설정
     alignItems: 'center', // 중앙 정렬
+    backgroundColor: 'white', // 배경색을 흰색으로 설정
+    borderRadius: 10, // 모서리를 둥글게 설정
+    shadowColor: '#000', // 그림자 색상 설정
+    shadowOffset: { width: 0, height: 2 }, // 그림자의 위치 설정
+    shadowOpacity: 0.2, // 그림자의 투명도 설정
+    shadowRadius: 4, // 그림자의 반경 설정
+    elevation: 3, // 안드로이드에서의 그림자 효과 설정
+    padding: 13, // 내부 여백 설정
   },
   productImage: {
     width: 100, // 이미지 너비
     height: 100, // 이미지 높이
+    borderRadius: 10, // 이미지의 모서리를 둥글게 설정
+    marginBottom: 10, // 이미지 아래 여백 설정
   },
   productBrand: {
     fontSize: 14, // 브랜드명 폰트 크기
     fontWeight: 'bold', // 브랜드명 폰트 굵기
+    marginBottom: 5, // 브랜드명 아래 여백 설정
   },
   productName: {
     fontSize: 12, // 상품명 폰트 크기
-    maxWidth: 100, // 상품명 텍스트의 최대 너비를 지정 (긴 이름 생략 시 유용)
+    maxWidth: 100, // 상품명 텍스트의 최대 너비를 지정
+    marginBottom: 5, // 상품명 아래 여백 설정
   },
   productPrice: {
     fontSize: 12, // 가격 폰트 크기

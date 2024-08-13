@@ -19,6 +19,7 @@ const SignUpScreen = () => {
   const [isPasswordFocused, setIsPasswordFocused] = useState(false); // 비밀번호 입력란의 포커스 상태
   const [isConfirmPasswordFocused, setIsConfirmPasswordFocused] =
     useState(false); // 비밀번호 확인란의 포커스 상태
+  const [isEmailFocused, setIsEmailFocused] = useState(false); // 비밀번호 확인란의 포커스 상태
 
   const passwordInputRef = useRef<TextInput>(null); // 비밀번호 입력 칸의 ref
   const confirmPasswordInputRef = useRef<TextInput>(null); // 비밀번호 확인 칸의 ref
@@ -80,6 +81,23 @@ const SignUpScreen = () => {
         secureTextEntry
         onFocus={() => setIsConfirmPasswordFocused(true)}
         onBlur={() => setIsConfirmPasswordFocused(false)}
+        keyboardType="default"
+        returnKeyType="done"
+      />
+
+      <Text style={styles.label}>이메일 입력</Text>
+      <TextInput
+        ref={confirmPasswordInputRef}
+        style={[
+          styles.input,
+          { borderColor: isConfirmPasswordFocused ? GRAY.DARK : GRAY.DEFAULT },
+        ]}
+        placeholder="example@naver.com"
+        value={confirmPassword}
+        onChangeText={setConfirmPassword}
+        secureTextEntry
+        onFocus={() => setIsEmailFocused(true)}
+        onBlur={() => setIsEmailFocused(false)}
         keyboardType="default"
         returnKeyType="done"
       />
