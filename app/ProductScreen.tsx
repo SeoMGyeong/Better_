@@ -6,13 +6,14 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  Modal,
+  Animated,
 } from 'react-native';
 import { RouteProp, useRoute } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import Hr from '@/components/Hr';
 import { GRAY } from '@/constants/Colors';
 import { useCart } from './CartProvider';
-// CartContext 추가
 
 // API 데이터 타입 정의
 type Product = {
@@ -39,6 +40,8 @@ const ProductScreen = () => {
 
   const [product, setProduct] = useState<Product | null>(null);
   const [isFavorite, setIsFavorite] = useState(false); // 찜하기 상태 관리
+  const [isModalVisible, setIsModalVisible] = useState(false); // 모달 상태 관리
+  const [fadeAnim] = useState(new Animated.Value(1)); // 애니메이션 상태 관리
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -79,6 +82,25 @@ const ProductScreen = () => {
         quantity: 1,
         image: product.image_link,
       });
+      setIsModalVisible(true); // 모달 표시
+
+      Animated.sequence([
+        Animated.timing(fadeAnim, {
+          toValue: 1,
+          duration: 0,
+          useNativeDriver: true,
+        }),
+        Animated.timing(fadeAnim, {
+          toValue: 1,
+          duration: 2000, // 2초 동안 보이도록 설정
+          useNativeDriver: true,
+        }),
+        Animated.timing(fadeAnim, {
+          toValue: 0,
+          duration: 0, // 3초 후 즉시 사라지도록 설정
+          useNativeDriver: true,
+        }),
+      ]).start(() => setIsModalVisible(false)); // 애니메이션 완료 후 모달 숨김
     }
   };
 
@@ -114,6 +136,20 @@ const ProductScreen = () => {
           <Text style={styles.buttonText}>구매하기</Text>
         </TouchableOpacity>
       </View>
+
+      {/* 모달 팝업 */}
+      <Modal
+        transparent={true} // 화면이 어두워지도록 설정
+        animationType="fade"
+        visible={isModalVisible}
+        onRequestClose={() => setIsModalVisible(false)}
+      >
+        <View style={styles.modalContainer}>
+          <Animated.View style={[styles.modalContent, { opacity: fadeAnim }]}>
+            <Text style={styles.modalText}>장바구니에 담겼습니다!</Text>
+          </Animated.View>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -154,7 +190,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   description: {
-    fontSize: 14,
+    fontSize: 20,
     marginBottom: 16,
   },
   buttonContainer: {
@@ -183,9 +219,27 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: 16,
     fontWeight: 'bold',
-    // marginLeft: 8, // 아이콘과 텍스트 사이에 여백 추가
   },
   icon: {},
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    //   backgroundColor: 'rgba(0, 0, 0, 0.5)', // 모달 배경 반투명, 화면 어두워짐
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+    borderColor: GRAY.DARK,
+    borderWidth: 2,
+  },
+  modalText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: 'black',
+  },
 });
 
 export default ProductScreen;

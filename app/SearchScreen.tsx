@@ -1,3 +1,4 @@
+import Header from '@/components/Header';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from 'expo-router';
 import React, { useState, useEffect, useLayoutEffect } from 'react';
@@ -8,6 +9,7 @@ import {
   StyleSheet,
   FlatList,
   TouchableOpacity,
+  Image,
 } from 'react-native';
 
 const SearchScreen = () => {
@@ -20,16 +22,7 @@ const SearchScreen = () => {
   useLayoutEffect(() => {
     navigation.setOptions({
       // headerTitle을 홈 아이콘으로 대체
-      headerTitle: () => (
-        <TouchableOpacity
-          style={{ marginLeft: -15 }} // 아이콘과 왼쪽 여백 조정
-          onPress={() => {
-            // 홈 아이콘 클릭 시 아무 작업도 수행하지 않음
-          }}
-        >
-          <Ionicons name="home" size={24} color="black" />
-        </TouchableOpacity>
-      ),
+      headerTitle: () => <Header />,
     });
   }, [navigation]);
 
@@ -115,6 +108,12 @@ const styles = StyleSheet.create({
     padding: 8,
     borderBottomWidth: 1,
     borderBottomColor: 'gray',
+  },
+  logo: {
+    width: 100,
+    height: '100%',
+    //    marginRight: 'auto', // 로고와 아이콘 사이에 자동으로 공간을 추가하여 아이콘을 오른쪽으로 밀어냅니다.
+    //  padding: 'auto',
   },
 });
 

@@ -1,6 +1,6 @@
-import Header from '@/components/Header';
-import { useNavigation } from '@react-navigation/native';
-import React, { useState, useEffect, useLayoutEffect } from 'react'; // React 및 훅들을 가져옴
+import Header from '@/components/Header'; // Header 컴포넌트를 불러옵니다.
+import { useNavigation } from '@react-navigation/native'; // 네비게이션 훅을 가져옵니다.
+import React, { useState, useEffect, useLayoutEffect } from 'react'; // 필요한 React 훅들을 가져옵니다.
 import {
   View,
   Text,
@@ -9,178 +9,197 @@ import {
   FlatList,
   Dimensions,
   ScrollView,
-} from 'react-native'; // React Native 컴포넌트 및 스타일 관련 함수들을 가져옴
-import BannerSlider from '@/components/BannerSlider';
+  TouchableOpacity,
+} from 'react-native'; // React Native의 기본 컴포넌트들을 가져옵니다.
+import BannerSlider from '@/components/BannerSlider'; // 배너 슬라이더 컴포넌트를 불러옵니다.
 
-const { width } = Dimensions.get('window'); // 기기의 화면 너비를 가져와서 width 변수에 저장
+const { width } = Dimensions.get('window'); // 화면의 너비를 가져옵니다.
 
 const HomeScreen = () => {
-  const [products, setProducts] = useState([]); // 신상품 목록을 관리할 상태값을 선언
-  const [brands, setBrands] = useState({}); // 브랜드별 상품 목록을 관리할 상태값을 선언
-  const [isLoading, setIsLoading] = useState(true); // 로딩 상태를 관리할 상태 추가
-  const navigation = useNavigation();
+  const [products, setProducts] = useState([]); // 상품 목록을 저장할 상태 변수
+  const [brands, setBrands] = useState({}); // 브랜드별 상품을 저장할 상태 변수
+  const [isLoading, setIsLoading] = useState(true); // 로딩 상태를 관리할 상태 변수
+  const navigation = useNavigation(); // 네비게이션 훅을 사용하여 네비게이션 객체를 가져옵니다.
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerTitle: () => <Header />,
+      headerTitle: () => <Header />, // 헤더 제목에 Header 컴포넌트를 설정합니다.
       headerStyle: {
-        backgroundColor: 'white', // 헤더 배경색 추가
+        backgroundColor: 'white', // 헤더의 배경색을 흰색으로 설정합니다.
       },
-      headerTintColor: 'black', // 헤더 아이콘 색상 추가
+      headerTintColor: 'black', // 헤더의 텍스트 색상을 검정색으로 설정합니다.
     });
-  }, [navigation]);
+  }, [navigation]); // navigation 객체가 변경될 때마다 이 useLayoutEffect가 실행됩니다.
 
-  // 신상품 및 브랜드별 상품 데이터를 가져오는 useEffect 훅
   useEffect(() => {
-    fetch('https://makeup-api.herokuapp.com/api/v1/products.json') // 외부 API로부터 데이터 가져오기
-      .then((response) => response.json()) // JSON 형태로 파싱
+    fetch('https://makeup-api.herokuapp.com/api/v1/products.json') // API에서 제품 데이터를 가져옵니다.
+      .then((response) => response.json()) // JSON 형태로 응답을 파싱합니다.
       .then((data) => {
-        // 가격이 0이 아니고 이미지 링크가 있는 상품만 필터링하여 신상품 목록에 저장
         const filteredProducts = data
-          .filter((item) => item.price > 0 && item.api_featured_image) // 가격이 0이 아니고 이미지가 있는 상품만 포함
-          .sort((a, b) => b.id - a.id) // ID가 큰 순서대로 정렬
-          .slice(0, 12); // 상위 12개 상품만 추출
-        setProducts(filteredProducts); // 상태값에 저장
+          .filter((item) => item.price > 0 && item.api_featured_image) // 가격이 0보다 크고 이미지가 있는 제품만 필터링합니다.
+          .sort((a, b) => b.id - a.id) // ID를 기준으로 내림차순 정렬합니다.
+          .slice(0, 12); // 상위 12개의 제품만 선택합니다.
+        setProducts(filteredProducts); // 필터링된 제품 목록을 상태에 저장합니다.
 
-        // 브랜드별로 상품을 그룹화하고 브랜드별로 상품 목록 생성
         const groupedByBrand = data.reduce((acc, product) => {
           if (product.price > 0 && product.api_featured_image) {
-            // 가격이 0이 아니고 이미지가 있는 상품만 포함
-            if (!acc[product.brand]) acc[product.brand] = []; // 브랜드별로 배열 초기화
-            acc[product.brand].push(product); // 해당 브랜드 배열에 상품 추가
+            if (!acc[product.brand]) acc[product.brand] = []; // 브랜드가 없으면 빈 배열을 생성합니다.
+            acc[product.brand].push(product); // 해당 브랜드 배열에 제품을 추가합니다.
           }
           return acc;
         }, {});
 
-        // 각 브랜드 내에서 ID 기준으로 정렬 후 상위 8개 상품만 저장
         for (let brand in groupedByBrand) {
           if (groupedByBrand[brand].length >= 12) {
-            // 상품이 12개 이상 있는 브랜드만 포함
             groupedByBrand[brand] = groupedByBrand[brand]
-              .sort((a, b) => b.id - a.id)
-              .slice(0, 8);
+              .sort((a, b) => b.id - a.id) // ID를 기준으로 내림차순 정렬합니다.
+              .slice(0, 8); // 상위 8개의 제품만 선택합니다.
           } else {
-            delete groupedByBrand[brand]; // 12개 미만인 브랜드는 삭제
+            delete groupedByBrand[brand]; // 제품이 12개 미만인 브랜드는 삭제합니다.
           }
         }
 
-        setBrands(groupedByBrand); // 상태값에 저장
-        setIsLoading(false); // 데이터 로딩 완료 후 로딩 상태를 false로 설정
+        setBrands(groupedByBrand); // 브랜드별 제품 목록을 상태에 저장합니다.
+        setIsLoading(false); // 로딩 상태를 false로 설정합니다.
       });
-  }, []); // 빈 배열을 두어 처음에만 한 번 실행되도록 설정
+  }, []); // 컴포넌트가 마운트될 때만 실행됩니다.
 
   // 신상품 목록에 각 아이템을 렌더링하는 함수
   const renderProductItem = ({ item }) => {
-    // 이미지 URL이 //로 시작하면 https:를 붙여서 절대 경로로 변환
     const imageUrl = item.api_featured_image.startsWith('//')
-      ? `https:${item.api_featured_image}`
+      ? `https:${item.api_featured_image}` // 이미지 URL이 '//'로 시작하는 경우, 'https:'를 붙여서 수정합니다.
       : item.api_featured_image;
 
     return (
-      <View style={styles.productContainer}>
-        <Image
-          source={{ uri: imageUrl }} // 절대 경로로 변환된 이미지 URL 사용
-          style={styles.productImage}
-        />
+      <TouchableOpacity
+        style={styles.productContainer} // 스타일 적용
+        onPress={
+          () => navigation.navigate('ProductScreen', { productId: item.id }) // 상품 아이템을 클릭했을 때 ProductScreen으로 이동
+        }
+      >
+        <Image source={{ uri: imageUrl }} style={styles.productImage} />
         <Text style={styles.productBrand}>{item.brand}</Text>
-        <Text
-          style={styles.productName}
-          numberOfLines={1} // 한 줄로 표시
-          ellipsizeMode="tail" // 텍스트가 길 경우 뒷부분을 생략하고 ...으로 표시
-        >
+        <Text style={styles.productName} numberOfLines={1} ellipsizeMode="tail">
           {item.name}
         </Text>
         <Text style={styles.productPrice}>
           ₩{Number(item.price * 1300).toLocaleString()}
         </Text>
-        {/* 가격 (원화로 변환 후 콤마 처리) */}
-      </View>
+      </TouchableOpacity>
     );
   };
 
   // 브랜드별로 섹션을 렌더링하는 함수
   const renderBrandSection = (brand, products) => (
     <View key={brand}>
+      {/* 브랜드를 키로 사용하여 각 섹션을 생성합니다. */}
       <Text style={styles.sectionTitle}>{brand}</Text>
       <FlatList
-        data={products}
-        renderItem={renderProductItem} // 신상품 렌더링 함수 재사용
-        keyExtractor={(item) => item.id.toString()} // 고유 키 설정
+        data={products} // 브랜드에 해당하는 제품 목록
+        renderItem={renderProductItem} // 각 아이템을 렌더링하는 함수
+        keyExtractor={(item) => item.id.toString()} // 각 아이템의 고유 키를 설정합니다.
         horizontal // 수평 스크롤
-        showsHorizontalScrollIndicator={true} // 수평 스크롤바 표시
+        showsHorizontalScrollIndicator={true} // 수평 스크롤 표시기 표시
+        ListFooterComponent={() => (
+          <TouchableOpacity
+            style={styles.moreButton} // 버튼 스타일을 상품 이미지와 유사하게 설정합니다.
+            onPress={
+              () => navigation.navigate('BrandScreen', { brandName: brand }) // 더보기 버튼을 눌렀을 때 해당 브랜드의 상품들을 전부 볼 수 있는 BrandScreen으로 이동
+            }
+          >
+            <Text style={styles.moreButtonText}>더보기</Text>
+          </TouchableOpacity>
+        )}
       />
     </View>
   );
 
   return (
     <ScrollView style={styles.container}>
-      {/* 베너 슬라이드 */}
+      {/* 스크롤 가능한 컨테이너 */}
       <BannerSlider />
-      {/* 신상품 목록 */}
       <Text style={styles.sectionTitle}>신상품</Text>
       <FlatList
-        data={products} // 신상품 데이터
-        renderItem={renderProductItem} // 신상품 렌더링 함수
-        keyExtractor={(item) => item.id.toString()} // 고유 키 설정
-        numColumns={3} // 3열로 정렬
-        scrollEnabled={false} // 이 FlatList의 스크롤 비활성화 (전체 ScrollView에서 스크롤 관리)
+        data={products} // 신상품 목록
+        renderItem={renderProductItem} // 각 아이템을 렌더링하는 함수
+        keyExtractor={(item) => item.id.toString()} // 각 아이템의 고유 키를 설정합니다.
+        numColumns={3} // 3열로 구성
+        scrollEnabled={false} // 스크롤 비활성화
       />
-      {/* 브랜드별 상품 목록 */}
       <Text style={styles.sectionTitle}>브랜드별 상품 목록</Text>
-      {Object.keys(brands).map((brand) =>
-        renderBrandSection(brand, brands[brand])
+      {Object.keys(brands).map(
+        (brand) => renderBrandSection(brand, brands[brand]) // 각 브랜드 섹션 렌더링
       )}
-      {/* 각 브랜드별 섹션 렌더링 */}
     </ScrollView>
   );
 };
 
-// 스타일 정의
 const styles = StyleSheet.create({
   container: {
-    flex: 1, // 화면 전체를 채우도록 설정
+    flex: 1, // 화면 전체를 차지하도록 설정합니다. flex: 1은 부모 컨테이너의 남은 공간을 모두 차지하게 합니다.
   },
   bannerImage: {
-    width: width, // 화면 너비에 맞게 설정
-    height: 200, // 이미지 높이를 200으로 설정
+    width: width, // 화면의 전체 너비를 설정합니다.
+    height: 200, // 배너의 높이를 200으로 설정합니다.
   },
   sectionTitle: {
-    fontSize: 18, // 섹션 제목 폰트 크기
-    fontWeight: 'bold', // 섹션 제목 폰트 굵기
-    marginVertical: 10, // 섹션 제목 위아래 여백
+    fontSize: 18, // 텍스트의 폰트 크기를 18로 설정합니다.
+    fontWeight: 'bold', // 텍스트를 굵게 표시합니다.
+    marginVertical: 10, // 상하로 10 단위의 마진을 추가하여 위아래 여백을 만듭니다.
   },
   productContainer: {
-    flex: 1, // 아이템을 화면에 골고루 분배
-    margin: 8, // 아이템 간의 여백 설정
-    alignItems: 'center', // 중앙 정렬
-    backgroundColor: 'white', // 배경색을 흰색으로 설정
-    borderRadius: 10, // 모서리를 둥글게 설정
-    shadowColor: '#000', // 그림자 색상 설정
-    shadowOffset: { width: 0, height: 2 }, // 그림자의 위치 설정
-    shadowOpacity: 0.2, // 그림자의 투명도 설정
-    shadowRadius: 4, // 그림자의 반경 설정
-    elevation: 3, // 안드로이드에서의 그림자 효과 설정
-    padding: 13, // 내부 여백 설정
+    flex: 1, // 가로 방향으로 공간을 균등하게 분배합니다.
+    margin: 8, // 상하좌우로 8 단위의 마진을 추가하여 여백을 설정합니다.
+    alignItems: 'center', // 컨테이너 안의 아이템을 가운데 정렬합니다.
+    backgroundColor: 'white', // 배경색을 흰색으로 설정합니다.
+    borderRadius: 10, // 모서리의 둥글기 정도를 10으로 설정하여 둥글게 만듭니다.
+    shadowColor: '#000', // 그림자의 색상을 검정색으로 설정합니다.
+    shadowOffset: { width: 0, height: 2 }, // 그림자의 위치를 아래로 2 단위 이동시킵니다.
+    shadowOpacity: 0.2, // 그림자의 투명도를 20%로 설정합니다.
+    shadowRadius: 4, // 그림자의 흐림 정도를 4로 설정합니다.
+    elevation: 3, // 안드로이드에서 그림자의 높이를 설정합니다.
+    padding: 13, // 컨테이너 내부의 여백을 13 단위로 설정합니다.
   },
   productImage: {
-    width: 100, // 이미지 너비
-    height: 100, // 이미지 높이
-    borderRadius: 10, // 이미지의 모서리를 둥글게 설정
-    marginBottom: 10, // 이미지 아래 여백 설정
+    width: 100, // 이미지의 너비를 100으로 설정합니다.
+    height: 100, // 이미지의 높이를 100으로 설정합니다.
+    borderRadius: 10, // 이미지의 모서리를 둥글게 만들기 위해 10으로 설정합니다.
+    marginBottom: 10, // 이미지와 하단 요소 간의 여백을 10 단위로 설정합니다.
   },
   productBrand: {
-    fontSize: 14, // 브랜드명 폰트 크기
-    fontWeight: 'bold', // 브랜드명 폰트 굵기
-    marginBottom: 5, // 브랜드명 아래 여백 설정
+    fontSize: 14, // 브랜드 텍스트의 폰트 크기를 14로 설정합니다.
+    fontWeight: 'bold', // 브랜드 텍스트를 굵게 표시합니다.
+    marginBottom: 5, // 브랜드 텍스트와 하단 텍스트 간의 여백을 5 단위로 설정합니다.
   },
   productName: {
-    fontSize: 12, // 상품명 폰트 크기
-    maxWidth: 100, // 상품명 텍스트의 최대 너비를 지정
-    marginBottom: 5, // 상품명 아래 여백 설정
+    fontSize: 12, // 제품 이름의 폰트 크기를 12로 설정합니다.
+    maxWidth: 100, // 제품 이름의 최대 너비를 100으로 설정하여 긴 텍스트를 잘리게 만듭니다.
+    marginBottom: 5, // 제품 이름과 가격 간의 여백을 5 단위로 설정합니다.
   },
   productPrice: {
-    fontSize: 12, // 가격 폰트 크기
-    color: 'green', // 가격 폰트 색상
+    fontSize: 12, // 제품 가격의 폰트 크기를 12로 설정합니다.
+    color: 'black', // 제품 가격의 텍스트 색상
+  },
+  moreButton: {
+    flex: 1, // 버튼의 크기를 컨테이너에 맞게 조정합니다.
+    margin: 8, // 버튼과 주변 요소 간의 여백을 8 단위로 설정합니다.
+    alignItems: 'center', // 버튼 내의 텍스트를 가운데 정렬합니다.
+    backgroundColor: 'white', // 버튼의 배경색을 흰색으로 설정합니다.
+    borderRadius: 10, // 버튼의 모서리를 둥글게 만들기 위해 10으로 설정합니다.
+    shadowColor: '#000', // 버튼의 그림자 색상을 검정색으로 설정합니다.
+    shadowOffset: { width: 0, height: 2 }, // 버튼의 그림자 위치를 아래로 2 단위 이동시킵니다.
+    shadowOpacity: 0.2, // 버튼의 그림자 투명도를 20%로 설정합니다.
+    shadowRadius: 4, // 버튼의 그림자 흐림 정도를 4로 설정합니다.
+    elevation: 3, // 버튼의 그림자 높이를 설정합니다.
+    padding: 13, // 버튼 내부의 여백을 13 단위로 설정합니다.
+    justifyContent: 'center', // 버튼 내부의 텍스트를 수직 중앙에 정렬합니다.
+    paddingHorizontal: 20, // 버튼의 좌우 패딩을 20 단위로 설정합니다.
+    paddingVertical: 10, // 버튼의 상하 패딩을 10 단위로 설정합니다.
+  },
+  moreButtonText: {
+    fontSize: 14, // 더보기 버튼의 텍스트 폰트 크기를 14로 설정합니다.
+    fontWeight: 'bold', // 더보기 버튼의 텍스트를 굵게 표시합니다.
+    color: '#000', // 더보기 버튼의 텍스트 색상을 검정색으로 설정합니다.
   },
 });
 

@@ -18,6 +18,7 @@ interface CartContextType {
   addToCart: (item: CartItem) => void;
   increaseQuantity: (id: string) => void;
   decreaseQuantity: (id: string) => void;
+  removeItem: (id: number) => void; // removeItem 함수 추가
 }
 
 // Create Context
@@ -60,9 +61,20 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     );
   };
 
+  // removeItem 함수 구현
+  const removeItem = (id: number) => {
+    setCartItems(cartItems.filter((item) => item.id !== id));
+  };
+
   return (
     <CartContext.Provider
-      value={{ cartItems, addToCart, increaseQuantity, decreaseQuantity }}
+      value={{
+        cartItems,
+        addToCart,
+        increaseQuantity,
+        decreaseQuantity,
+        removeItem,
+      }}
     >
       {children}
     </CartContext.Provider>

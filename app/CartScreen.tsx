@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -6,17 +6,44 @@ import {
   TouchableOpacity,
   FlatList,
   StyleSheet,
+  Alert,
 } from 'react-native';
 import { useCart } from './CartProvider';
 
 const CartScreen = () => {
-  const { cartItems, increaseQuantity, decreaseQuantity } = useCart();
+  const { cartItems, increaseQuantity, decreaseQuantity, removeItem } =
+    useCart();
+  const [selectedItem, setSelectedItem] = useState(null);
 
   const calculateTotalPrice = () => {
     return cartItems.reduce(
       (total, item) => total + item.price * item.quantity,
       0
     );
+  };
+
+  const calculateTotalQuantity = () => {
+    return cartItems.reduce((total, item) => total + item.quantity, 0);
+  };
+
+  const handleDecreaseQuantity = (item) => {
+    if (item.quantity === 1) {
+      // 아이템 수량이 1일 때, 삭제 확인 팝업 표시
+      Alert.alert('삭제 확인', '장바구니에서 해당 상품을 삭제하시겠습니까?', [
+        {
+          text: '취소',
+          onPress: () => console.log('삭제 취소'),
+          style: 'cancel',
+        },
+        {
+          text: '삭제',
+          onPress: () => removeItem(item.id),
+          style: 'destructive',
+        },
+      ]);
+    } else {
+      decreaseQuantity(item.id);
+    }
   };
 
   const renderItem = ({ item }) => (
@@ -26,7 +53,7 @@ const CartScreen = () => {
         <Text style={styles.brand}>{item.brand}</Text>
         <Text style={styles.name}>{item.name}</Text>
         <View style={styles.quantityContainer}>
-          <TouchableOpacity onPress={() => decreaseQuantity(item.id)}>
+          <TouchableOpacity onPress={() => handleDecreaseQuantity(item)}>
             <Text style={styles.quantityButton}>-</Text>
           </TouchableOpacity>
           <Text style={styles.quantity}>{item.quantity}</Text>
@@ -48,10 +75,12 @@ const CartScreen = () => {
           <FlatList
             data={cartItems}
             renderItem={renderItem}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(item) => item.id.toString()}
           />
           <View style={styles.totalContainer}>
-            <Text style={styles.totalText}>총 {cartItems.length}건</Text>
+            <Text style={styles.totalText}>
+              총 {calculateTotalQuantity()}개
+            </Text>
             <Text style={styles.totalText}>
               {calculateTotalPrice().toLocaleString('ko-KR')}원
             </Text>
