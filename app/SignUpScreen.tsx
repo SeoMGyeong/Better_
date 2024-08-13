@@ -15,14 +15,16 @@ const SignUpScreen = () => {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [isIdFocused, setIsIdFocused] = useState(false); // 아이디 입력란의 포커스 상태
-  const [isPasswordFocused, setIsPasswordFocused] = useState(false); // 비밀번호 입력란의 포커스 상태
+  const [email, setEmail] = useState(''); // 이메일 상태 추가
+  const [isIdFocused, setIsIdFocused] = useState(false);
+  const [isPasswordFocused, setIsPasswordFocused] = useState(false);
   const [isConfirmPasswordFocused, setIsConfirmPasswordFocused] =
-    useState(false); // 비밀번호 확인란의 포커스 상태
-  const [isEmailFocused, setIsEmailFocused] = useState(false); // 비밀번호 확인란의 포커스 상태
+    useState(false);
+  const [isEmailFocused, setIsEmailFocused] = useState(false);
 
-  const passwordInputRef = useRef<TextInput>(null); // 비밀번호 입력 칸의 ref
-  const confirmPasswordInputRef = useRef<TextInput>(null); // 비밀번호 확인 칸의 ref
+  const passwordInputRef = useRef<TextInput>(null);
+  const confirmPasswordInputRef = useRef<TextInput>(null);
+  const emailInputRef = useRef<TextInput>(null); // 이메일 입력 칸의 ref 추가
 
   const navigation = useNavigation();
 
@@ -45,7 +47,7 @@ const SignUpScreen = () => {
         onChangeText={setId}
         onFocus={() => setIsIdFocused(true)}
         onBlur={() => setIsIdFocused(false)}
-        keyboardType="email-address"
+        keyboardType="default"
         returnKeyType="next"
         onSubmitEditing={() => passwordInputRef.current?.focus()}
       />
@@ -82,23 +84,23 @@ const SignUpScreen = () => {
         onFocus={() => setIsConfirmPasswordFocused(true)}
         onBlur={() => setIsConfirmPasswordFocused(false)}
         keyboardType="default"
-        returnKeyType="done"
+        returnKeyType="next"
+        onSubmitEditing={() => emailInputRef.current?.focus()} // 다음을 눌렀을 때 이메일 입력 칸에 포커스
       />
 
       <Text style={styles.label}>이메일 입력</Text>
       <TextInput
-        ref={confirmPasswordInputRef}
+        ref={emailInputRef} // 이메일 입력란에 고유한 ref 사용
         style={[
           styles.input,
-          { borderColor: isConfirmPasswordFocused ? GRAY.DARK : GRAY.DEFAULT },
+          { borderColor: isEmailFocused ? GRAY.DARK : GRAY.DEFAULT },
         ]}
         placeholder="example@naver.com"
-        value={confirmPassword}
-        onChangeText={setConfirmPassword}
-        secureTextEntry
+        value={email} // 이메일 상태 사용
+        onChangeText={setEmail} // 이메일 상태 업데이트
         onFocus={() => setIsEmailFocused(true)}
         onBlur={() => setIsEmailFocused(false)}
-        keyboardType="default"
+        keyboardType="email-address"
         returnKeyType="done"
       />
 
