@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import Hr from '@/components/Hr';
 
 const BrandScreen = () => {
   const [brandProducts, setBrandProducts] = useState([]); // 브랜드의 모든 상품을 저장할 상태
@@ -61,7 +62,8 @@ const BrandScreen = () => {
         <Text style={styles.loadingText}>로딩 중...</Text>
       ) : brandProducts.length > 0 ? (
         <>
-          <Text style={styles.sectionTitle}>{brandName}의 상품 목록</Text>
+          <Text style={styles.sectionTitle}>{brandName}</Text>
+          <Hr />
           <FlatList
             data={brandProducts}
             renderItem={renderProductItem}
@@ -88,6 +90,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 20,
+    marginTop: 10,
     textAlign: 'center',
   },
   loadingText: {
