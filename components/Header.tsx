@@ -10,7 +10,7 @@ const Header = () => {
   return (
     <View style={styles.container}>
       <Image
-        source={require('../assets/images/BetterLogo_yellow.png')}
+        source={require('../assets/images/Bblue.jpg')}
         style={styles.logo}
         resizeMode="contain"
       />

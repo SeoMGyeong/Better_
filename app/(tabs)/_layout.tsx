@@ -1,6 +1,7 @@
 import { Tabs } from 'expo-router';
 import React from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { BLACK, GRAY } from '@/constants/Colors';
 
 const TabLayout = () => {
   return (
@@ -13,6 +14,7 @@ const TabLayout = () => {
         name="CategoryScreen"
         options={{
           title: 'Category',
+
           tabBarIcon: ({ color, focused }) => (
             <MaterialCommunityIcons
               name={focused ? 'view-headline' : 'view-headline'}
