@@ -6,12 +6,13 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
-  FlatList,
 } from 'react-native';
 import { RouteProp, useRoute } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import Hr from '@/components/Hr';
 import { GRAY } from '@/constants/Colors';
+import { useCart } from './CartProvider';
+// CartContext 추가
 
 // API 데이터 타입 정의
 type Product = {
@@ -33,6 +34,8 @@ type ProductScreenRouteProp = RouteProp<RootStackParamList, 'ProductScreen'>;
 const ProductScreen = () => {
   const route = useRoute<ProductScreenRouteProp>();
   const { productId } = route.params;
+
+  const { addToCart } = useCart(); // CartContext에서 addToCart 가져오기
 
   const [product, setProduct] = useState<Product | null>(null);
   const [isFavorite, setIsFavorite] = useState(false); // 찜하기 상태 관리
@@ -65,6 +68,20 @@ const ProductScreen = () => {
     setIsFavorite(!isFavorite); // 찜하기 상태를 토글
   };
 
+  // 장바구니에 상품 추가하는 함수
+  const handleAddToCart = () => {
+    if (product) {
+      addToCart({
+        id: product.id.toString(),
+        brand: product.brand,
+        name: product.name,
+        price: parseInt(product.price) * 1600, // 가격을 한화로 변환
+        quantity: 1,
+        image: product.image_link,
+      });
+    }
+  };
+
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -90,7 +107,7 @@ const ProductScreen = () => {
             style={styles.icon}
           />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => {}}>
+        <TouchableOpacity style={styles.button} onPress={handleAddToCart}>
           <Text style={styles.buttonText}>장바구니</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={() => {}}>
@@ -123,7 +140,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   brandName: {
-    fontSize: 50,
+    fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 8,
   },
@@ -137,7 +154,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   description: {
-    fontSize: 20,
+    fontSize: 14,
     marginBottom: 16,
   },
   buttonContainer: {
