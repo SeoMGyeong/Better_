@@ -49,9 +49,9 @@ const BrandScreen = () => {
         <Text style={styles.productName} numberOfLines={1} ellipsizeMode="tail">
           {item.name}
         </Text>
-        <Text style={styles.productPrice}>
-          ₩{Number(item.price * 1300).toLocaleString()}
-        </Text>
+        <Text style={styles.productPrice}>{`₩${(
+          parseInt(item.price) * 1600
+        ).toLocaleString()}`}</Text>
       </TouchableOpacity>
     );
   };

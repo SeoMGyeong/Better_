@@ -82,9 +82,9 @@ const HomeScreen = () => {
         <Text style={styles.productName} numberOfLines={1} ellipsizeMode="tail">
           {item.name}
         </Text>
-        <Text style={styles.productPrice}>
-          ₩{Number(item.price * 1300).toLocaleString()}
-        </Text>
+        <Text style={styles.productPrice}>{`₩${(
+          parseInt(item.price) * 1600
+        ).toLocaleString()}`}</Text>
       </TouchableOpacity>
     );
   };
@@ -145,13 +145,14 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 20, // 텍스트의 폰트 크기를 18로 설정합니다.
     fontWeight: 'bold', // 텍스트를 굵게 표시합니다.
-    marginVertical: 20, // 상하로 10 단위의 마진을 추가하여 위아래 여백을 만듭니다.
-
+    //  marginVertical: 20, // 상하로 10 단위의 마진을 추가하여 위아래 여백을 만듭니다.
+    marginTop: 20,
+    marginBottom: 5,
     marginLeft: 10,
   },
   brandName: {
     marginLeft: 10,
-    marginTop: 10,
+    marginTop: 5,
     fontSize: 20,
   },
   productContainer: {
