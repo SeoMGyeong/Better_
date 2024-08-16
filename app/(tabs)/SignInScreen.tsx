@@ -1,3 +1,4 @@
+import { SignIn } from '@/api/Auth';
 import Header from '@/components/Header';
 import Hr from '@/components/Hr';
 import { GRAY } from '@/constants/Colors';
@@ -9,6 +10,7 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
+  Keyboard,
 } from 'react-native';
 
 const SignInScreen = () => {
@@ -26,6 +28,19 @@ const SignInScreen = () => {
       headerTitle: () => <Header />, // Header 컴포넌트를 헤더로 사용
     });
   }, [navigation]);
+
+  const onSubmit = async () => {
+    Keyboard.dismiss();
+    try {
+      const user = await SignIn({ email: id, password });
+      console.log('로그인 성공:', user);
+      // 로그인 성공 시 HomeScreen으로 이동
+      navigation.navigate('HomeScreen');
+    } catch (error) {
+      console.log('로그인 실패:', error.message);
+      // 에러 메시지 표시 로직 추가
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -61,9 +76,7 @@ const SignInScreen = () => {
 
       <TouchableOpacity
         style={styles.loginButton}
-        onPress={() => {
-          /* 로그인 로직 추가 */
-        }}
+        onPress={onSubmit} // 로그인 눌렀을때
       >
         <Text style={styles.loginButtonText}>로그인</Text>
       </TouchableOpacity>
