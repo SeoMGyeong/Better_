@@ -3,6 +3,7 @@ import Header from '@/components/Header';
 import Hr from '@/components/Hr';
 import { GRAY } from '@/constants/Colors';
 import { useNavigation } from 'expo-router';
+
 import React, { useEffect, useRef, useState } from 'react';
 import {
   View,
@@ -29,13 +30,14 @@ const SignInScreen = () => {
     });
   }, [navigation]);
 
+  // 로그인
   const onSubmit = async () => {
     Keyboard.dismiss();
     try {
       const user = await SignIn({ email: id, password });
       console.log('로그인 성공:', user);
       // 로그인 성공 시 HomeScreen으로 이동
-      navigation.navigate('HomeScreen');
+      navigation.navigate('/');
     } catch (error) {
       console.log('로그인 실패:', error.message);
       // 에러 메시지 표시 로직 추가
