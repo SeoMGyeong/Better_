@@ -35,6 +35,7 @@ const RootLayout = () => {
     <CartProvider>
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="ProfileScreen" options={{ headerShown: true }} />
         <Stack.Screen name="+not-found" />
         <Stack.Screen name="CartScreen" />
         <Stack.Screen name="SearchScreen" />
