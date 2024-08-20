@@ -5,16 +5,11 @@ import { BLACK, GRAY } from '@/constants/Colors';
 
 const TabLayout = () => {
   return (
-    <Tabs
-    // screenOptions={{
-    //  headerShown: false,
-    // }}
-    >
+    <Tabs>
       <Tabs.Screen
         name="CategoryScreen"
         options={{
           title: 'Category',
-
           tabBarIcon: ({ color, focused }) => (
             <MaterialCommunityIcons
               name={focused ? 'view-headline' : 'view-headline'}
@@ -29,7 +24,6 @@ const TabLayout = () => {
         name="index"
         options={{
           title: 'Home',
-
           tabBarIcon: ({ color, focused }) => (
             <MaterialCommunityIcons
               name={focused ? 'home' : 'home-outline'}

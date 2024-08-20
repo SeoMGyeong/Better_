@@ -1,4 +1,5 @@
-import { firebaseConfig } from '@/env';
+// import { firebaseConfig } from '@/env';
+import firebaseConfig from '@/env';
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 

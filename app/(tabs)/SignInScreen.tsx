@@ -1,9 +1,4 @@
-import { SignIn } from '@/api/Auth';
-import Header from '@/components/Header';
-import { GRAY } from '@/constants/Colors';
-import { useNavigation } from '@react-navigation/native';
-
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   View,
   TextInput,
@@ -12,6 +7,11 @@ import {
   StyleSheet,
   Keyboard,
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { SignIn } from '@/api/Auth'; // 가상의 API 함수
+import Header from '@/components/Header';
+import { GRAY } from '@/constants/Colors';
+import ProfileScreen from '../ProfileScreen';
 
 const SignInScreen = () => {
   const [id, setId] = useState('');
@@ -34,7 +34,7 @@ const SignInScreen = () => {
       const user = await SignIn({ email: id, password });
       console.log('로그인 성공:', user);
 
-      // 로그인 성공 시 ProfileScreen으로 이동하되 하단 탭은 유지
+      // 로그인 성공 시 ProfileScreen으로 이동하고, 탭을 유지
       navigation.navigate('ProfileScreen');
     } catch (error) {
       console.log('로그인 실패:', error.message);
