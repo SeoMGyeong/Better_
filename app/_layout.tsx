@@ -22,6 +22,26 @@ import ProductScreen from './ProductScreen';
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
+// CategoryStack 컴포넌트 생성
+function CategoryStack() {
+  return (
+    <Stack.Navigator>
+      {/* CategoryScreen 스택 */}
+      <Stack.Screen
+        name="Category"
+        component={CategoryScreen}
+        options={{ headerShown: false }}
+      />
+      {/* ProductScreen 스택 */}
+      <Stack.Screen
+        name="ProductScreen"
+        component={ProductScreen}
+        options={{ headerShown: false }}
+      />
+    </Stack.Navigator>
+  );
+}
+
 // ProfileStack 컴포넌트 생성
 function ProfileStack() {
   return (
@@ -36,12 +56,6 @@ function ProfileStack() {
       <Stack.Screen
         name="Profile"
         component={ProfileScreen}
-        options={{ headerShown: false }}
-      />
-      {/* ProductScreen 스택 */}
-      <Stack.Screen
-        name="Product"
-        component={ProductScreen}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
@@ -77,12 +91,13 @@ const RootLayout = () => {
         <Tab.Navigator
           initialRouteName="Home" // 초기 화면을 "Home"으로 설정
         >
-          {/* CategoryScreen 탭 */}
+          {/* CategoryStack 탭 */}
           <Tab.Screen
-            name="Category"
-            component={CategoryScreen}
+            name="CategoryStack"
+            component={CategoryStack}
             options={{
               tabBarIcon: () => <Text>📚</Text>,
+              headerShown: false, // 상단 헤더 숨김
             }}
           />
           {/* HomeScreen 탭 */}
@@ -99,6 +114,7 @@ const RootLayout = () => {
             component={ProfileStack}
             options={{
               tabBarIcon: () => <Text>👤</Text>,
+              headerShown: false, // 상단 헤더 숨김
             }}
           />
         </Tab.Navigator>
