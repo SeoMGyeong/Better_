@@ -1,5 +1,5 @@
 import Header from '@/components/Header'; // Header 컴포넌트를 불러옵니다.
-import { useNavigation } from '@react-navigation/native'; // 네비게이션 훅을 가져옵니다.
+import { NavigationContainer, useNavigation } from '@react-navigation/native'; // 네비게이션 훅을 가져옵니다.
 import React, { useState, useEffect, useLayoutEffect } from 'react'; // 필요한 React 훅들을 가져옵니다.
 import {
   View,
@@ -14,6 +14,7 @@ import {
 } from 'react-native'; // React Native의 기본 컴포넌트들을 가져옵니다.
 import BannerSlider from '@/components/BannerSlider'; // 배너 슬라이더 컴포넌트를 불러옵니다.
 import { initFirebase } from '@/api/firebase';
+import BottomTab from '@/src/navigations/BottomTab';
 
 //firebase 초기화 되었는지 확인 (앱의 최상단에서 한번만 호출)
 initFirebase();

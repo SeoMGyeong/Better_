@@ -9,10 +9,10 @@ import {
   FlatList,
 } from 'react-native';
 import Header from '@/components/Header';
-import { useNavigation } from 'expo-router';
+import { useNavigation } from '@react-navigation/native';
 
 // JSON 데이터 불러오기
-const data = require('../../assets/data/makeup-api.json');
+const data = require('../assets/data/makeup-api.json');
 
 const productTypes = [
   'Blush',

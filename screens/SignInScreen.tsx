@@ -11,7 +11,6 @@ import { useNavigation } from '@react-navigation/native';
 import { SignIn } from '@/api/Auth'; // 가상의 API 함수
 import Header from '@/components/Header';
 import { GRAY } from '@/constants/Colors';
-import ProfileScreen from '../ProfileScreen';
 
 const SignInScreen = () => {
   const [id, setId] = useState('');
